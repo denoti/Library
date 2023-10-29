@@ -1,3 +1,108 @@
 body {
-  background: red;
+  background: burlywood;
+  font-family: cursive;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main {
+  height: 90%;
+  width: 90%;
+  background: bisque;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+nav button {
+  padding: 8px;
+  border-radius: 8px;
+  background: #000;
+  color: #fff;
+}
+
+button {
+  border: none;
+  background: peachpuff;
+  border-radius: 5px;
+  font-size: 18px;
+  font-family: cursive;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:active {
+  transform: scale(1.06);
+}
+
+section.cards {
+  background: rgb(170, 164, 164);
+  border-radius: 8px;
+  height: 90%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  overflow: auto;
+}
+
+.card-item * {
+    margin: 0;
+}
+
+.card-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 200px;
+  width: 150px;
+  font-size: 15px;
+  background-color: rgb(198, 201, 198);
+  border-radius: 8px;
+  margin: 8px;
+}
+
+.card-item h2 {
+  font-size: 20px;
+}
+
+.card-item .read {
+  background: green;
+  color: aliceblue;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.not-read {
+  background: rgb(214, 39, 39);
+  color: aliceblue;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+/* MEDIA QUERY TO HANDLE RESPONSIVENESS */
+@media screen and (min-width: 1000px) {
+  main {
+    height: 70%;
+    width: 70%;
+  }
 }
