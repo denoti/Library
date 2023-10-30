@@ -1,5 +1,4 @@
 const mainCard = document.querySelector('.cards');
-
 let myLibrary = [];
 
 function Book(title, author, noOfPages, isRead) {
@@ -7,84 +6,61 @@ function Book(title, author, noOfPages, isRead) {
   this.author = author;
   this.noOfPages = noOfPages;
   this.isRead = isRead;
-  this.infor = function () {
-    return `${this.title} by ${this.author}, ${this.noOfPages} pages, ${this.isRead} `;
-  };
-  this.toggleIsReadStatus = function () {
-    if (this.isRead) {
-      this.isRead = false;
-    } else {
-      this.isRead = true;
-    }
-  };
 }
 
 // FUNCTION TO ADD A BOOK TO THE LIBRARY
 function addBookToLibrary(book) {
-  myLibrary.push({
-    title: book.title,
-    author: book.author,
-    noOfPages: book.noOfPages,
-    isRead: book.isRead,
-    infor: book.infor,
-    toggleIsReadStatus: book.toggleIsReadStatus,
-  });
+  myLibrary.push(book);
 }
 
-// FUNCTION THAT LOOPS THROUGH THE ARRAY AND DISPLAYS EACH BOOK
-
-function updateScreen() {
-  mainCard.textContent = '';
-  if (myLibrary.length > 0) {
-    for (let i = 0; i < myLibrary.length; i++) {
-      createBooks(
-        myLibrary[i].title,
-        myLibrary[i].author,
-        `${myLibrary[i].noOfPages} pages`,
-        myLibrary[i].isRead
-      );
-    }
-  } else {
-    return;
-  }
-}
-
-function createBooks(bookTitle, bookAuthor, bookPages, bookIsRead) {
-  // Title of Book
-  let title = document.createElement('h2');
-  title.classList.add('title');
-  title.textContent = bookTitle;
-  // Author Name
-  let author = document.createElement('p');
-  author.classList.add('author');
-  author.textContent = bookAuthor;
-  // Pages
-  let pages = document.createElement('p');
-  pages.classList.add('pages');
-  pages.textContent = bookPages;
-  // Read/Not read Button
-  let readBtn = document.createElement('button');
-  readBtn.classList.add('btn');
-  toggleReadBtn(bookIsRead, readBtn);
-  // Delete button
-  let deleteBtn = document.createElement('button');
-  // Delete Icon Fontawesome
-  let deleteIcon = document.createElement('i');
-  deleteIcon.classList.add('fa-solid');
-  deleteIcon.classList.add('fa-trash-can');
-
-  deleteBtn.appendChild(deleteIcon);
+function createBooks(book) {
   // Holds all Item cards
   let cardItem = document.createElement('div');
   cardItem.classList.add('card-item');
+
+  // Title of Book
+  let title = document.createElement('h2');
+  title.classList.add('title');
+  title.textContent = book.title;
+
+  // Author Name
+  let author = document.createElement('p');
+  author.classList.add('author');
+  author.textContent = book.author;
+
+  // Pages
+  let pages = document.createElement('p');
+  pages.classList.add('pages');
+  pages.textContent = `${book.noOfPages} pages`;
+
+  // Read/Not read Button
+  let readBtn = document.createElement('button');
+  readBtn.classList.add('btn');
+  readBtn.addEventListener('click', () => {
+    book.isRead = !book.isRead;
+    toggleReadBtn(book, readBtn);
+  });
+
+  // Delete button
+  let deleteBtn = document.createElement('button');
+  let deleteIcon = document.createElement('i');
+  deleteIcon.classList.add('fa-solid');
+  deleteIcon.classList.add('fa-trash-can');
+  deleteBtn.appendChild(deleteIcon);
+  deleteBtn.addEventListener('click', () => {
+    removeBookFromLibrary(book);
+    cardItem.remove();
+  });
+
+  toggleReadBtn(book, readBtn);
 
   // Append everything to card Item
   cardItem.append(title, author, pages, readBtn, deleteBtn);
   mainCard.append(cardItem);
 }
 
-function toggleReadBtn(value, btn) {
-  if (value === true) {
+function toggleReadBtn(book, btn) {
+  if (book.isRead) {
     btn.classList.add('read');
     btn.classList.remove('not-read');
     btn.textContent = 'Already Read';
@@ -95,47 +71,35 @@ function toggleReadBtn(value, btn) {
   }
 }
 
-const cantHurtMe = new Book("Can't Hurt Me", 'David Goggins', 300, false);
-
-const theHobbit = new Book('The Hobbit', 'J.R.R Tolkien', 295, false);
-
-theHobbit.toggleIsReadStatus();
-
-addBookToLibrary(cantHurtMe);
-addBookToLibrary(theHobbit);
-
-updateScreen();
-deleteAndToggle();
-
-function deleteAndToggle() {
-  // TOGGLE BUTTONS
-  const toggleRead = Array.from(document.querySelectorAll('.btn'));
-
-  toggleRead.forEach((btn, index) => {
-    btn.addEventListener('click', () => {
-      myLibrary[index].toggleIsReadStatus();
-      toggleReadBtn(myLibrary[index].isRead, btn);
-    });
-  });
-  // DELETE BUTTONS
-
-  const deleteBtn = Array.from(document.querySelectorAll('i'));
-
-  deleteBtn.forEach((btn, index) => {
-    btn.addEventListener('click', () => {
-      const parent = btn.parentElement.parentElement;
-      myLibrary = myLibrary.filter(
-        (item) => item.title !== parent.children[0].textContent
-      );
-      parent.remove();
-    });
-  });
+function removeBookFromLibrary(book) {
+  const index = myLibrary.indexOf(book);
+  if (index !== -1) {
+    myLibrary.splice(index, 1);
+  }
 }
+
+// FUNCTION THAT LOOPS THROUGH THE ARRAY AND DISPLAYS EACH BOOK
+function updateScreen() {
+  mainCard.textContent = '';
+  myLibrary.forEach((book) => createBooks(book));
+}
+
+function init() {
+  const cantHurtMe = new Book("Can't Hurt Me", 'David Goggins', 300, false);
+  const theHobbit = new Book('The Hobbit', 'J.R.R Tolkien', 295, false);
+  theHobbit.isRead = true;
+
+  addBookToLibrary(cantHurtMe);
+  addBookToLibrary(theHobbit);
+
+  updateScreen();
+}
+
+init();
 
 // HANDLING DIALOG EVENTS
 const dialog = document.querySelector('dialog');
 const exit = document.querySelector('.exit');
-// const submit = document.querySelector('.submit');
 const addBook = document.querySelector('#add-book');
 const form = document.querySelector('form');
 
@@ -153,15 +117,10 @@ form.addEventListener('submit', (e) => {
   let authorTitle = e.currentTarget.elements['author-title'].value;
   let author = e.currentTarget.elements.name.value;
   let pages = e.currentTarget.elements.pages.value;
-  let readValue = e.currentTarget.elements['read-value'].value;
-  if (e.currentTarget.elements['read-value'].checked) {
-    readValue = true;
-  } else {
-    readValue = false;
-  }
+  let readValue = e.currentTarget.elements['read-value'].checked;
 
   const newBook = new Book(authorTitle, author, pages, readValue);
   addBookToLibrary(newBook);
   updateScreen();
-  deleteAndToggle();
+  e.currentTarget.reset();
 });
