@@ -21,24 +21,37 @@
             <h1>TOP LIBRARY</h1>
           </div>
           <div>
-            <button>NEW BOOK</button>
-            <!-- <button>REMOVE BOOK</button> -->
+            <button id="add-book">NEW BOOK</button>
           </div>
         </nav>
       </section>
 
-      <section class="cards">
-        <!-- <div class="card-item">
-          <h2 class="title">Can't Hurt Me</h2>
-          <p class="author">David Goggins</p>
-          <p class="pages">323 pages</p>
-          <button class="not-read btn">Done reading</button>
-          <button>
-            <i class="fa-solid fa-trash-can"></i>
-          </button>
-        </div> -->
-      </section>
+      <section class="cards"></section>
     </main>
+    <dialog autofocus>
+      <form method="dialog">
+        <div>
+          <label for="author-title">Book Title</label>
+          <input type="text" id="author-title" required />
+        </div>
+        <div>
+          <label for="name">Author Name</label>
+          <input type="text" id="name" required />
+        </div>
+        <div>
+          <label for="pages">Pages</label>
+          <input type="number" id="pages" required min="1"/>
+        </div>
+        <div>
+          <label for="read-value">Book Read</label>
+          <input type="checkbox" id="read-value"  />
+        </div>
+        <div>
+          <button class="exit">CLOSE</button>
+          <button type="submit" class="submit">SUBMIT</button>
+        </div>
+      </form>
+    </dialog>
     <script src="script.js"></script>
   </body>
 </html>

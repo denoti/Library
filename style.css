@@ -54,14 +54,13 @@ section.cards {
   height: 90%;
   width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap: wrap;
   overflow: auto;
 }
 
 .card-item * {
-    margin: 0;
+  margin: 0;
 }
 
 .card-item {
@@ -97,6 +96,53 @@ section.cards {
   margin: 0 auto;
   padding: 5px;
   border-radius: 5px;
+}
+
+dialog {
+  background: transparent;
+  border: none;
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+form {
+  border: 1px solid rgb(233, 215, 215);
+  background: burlywood;
+  border-radius: 8px;
+  box-shadow: 0 0 2px 2px whitesmoke;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  width: 300px;
+  padding: 10px;
+}
+
+form div {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+form div label {
+  color: rgb(128, 95, 5);
+}
+
+form div #read-value {
+  width: 50px;
+}
+
+form div input {
+  border-radius: 5px;
+  border: none;
+  padding: 5px;
+  outline: none;
+}
+
+form .submit {
+  align-self: center;
 }
 
 /* MEDIA QUERY TO HANDLE RESPONSIVENESS */

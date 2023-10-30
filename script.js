@@ -40,7 +40,7 @@ function updateScreen() {
       createBooks(
         myLibrary[i].title,
         myLibrary[i].author,
-        myLibrary[i].noOfPages,
+        `${myLibrary[i].noOfPages} pages`,
         myLibrary[i].isRead
       );
     }
@@ -95,7 +95,7 @@ function toggleReadBtn(value, btn) {
   }
 }
 
-const cantHurtMe = new Book("Can't Hurt Me", 'David Goggins', 295, false);
+const cantHurtMe = new Book("Can't Hurt Me", 'David Goggins', 300, false);
 
 const theHobbit = new Book('The Hobbit', 'J.R.R Tolkien', 295, false);
 
@@ -103,33 +103,65 @@ theHobbit.toggleIsReadStatus();
 
 addBookToLibrary(cantHurtMe);
 addBookToLibrary(theHobbit);
-// addBookToLibrary(cantHurtMe);
-// addBookToLibrary(theHobbit);
-// addBookToLibrary(cantHurtMe);
-// addBookToLibrary(theHobbit);
 
 updateScreen();
+deleteAndToggle();
 
-// TOGGLE BUTTONS
-const toggleRead = Array.from(document.querySelectorAll('.btn'));
+function deleteAndToggle() {
+  // TOGGLE BUTTONS
+  const toggleRead = Array.from(document.querySelectorAll('.btn'));
 
-toggleRead.forEach((btn, index) => {
-  btn.addEventListener('click', () => {
-    myLibrary[index].toggleIsReadStatus();
-    toggleReadBtn(myLibrary[index].isRead, btn);
+  toggleRead.forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+      myLibrary[index].toggleIsReadStatus();
+      toggleReadBtn(myLibrary[index].isRead, btn);
+    });
   });
+  // DELETE BUTTONS
+
+  const deleteBtn = Array.from(document.querySelectorAll('i'));
+
+  deleteBtn.forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+      const parent = btn.parentElement.parentElement;
+      myLibrary = myLibrary.filter(
+        (item) => item.title !== parent.children[0].textContent
+      );
+      parent.remove();
+    });
+  });
+}
+
+// HANDLING DIALOG EVENTS
+const dialog = document.querySelector('dialog');
+const exit = document.querySelector('.exit');
+// const submit = document.querySelector('.submit');
+const addBook = document.querySelector('#add-book');
+const form = document.querySelector('form');
+
+// New Book Event Listener
+addBook.addEventListener('click', () => {
+  dialog.showModal();
+});
+// Close Dialog without saving
+exit.addEventListener('click', () => {
+  dialog.close();
 });
 
-// DELETE BUTTONS
+// Handling the form button to get values
+form.addEventListener('submit', (e) => {
+  let authorTitle = e.currentTarget.elements['author-title'].value;
+  let author = e.currentTarget.elements.name.value;
+  let pages = e.currentTarget.elements.pages.value;
+  let readValue = e.currentTarget.elements['read-value'].value;
+  if (e.currentTarget.elements['read-value'].checked) {
+    readValue = true;
+  } else {
+    readValue = false;
+  }
 
-const deleteBtn = Array.from(document.querySelectorAll('i'));
-
-deleteBtn.forEach((btn, index) => {
-  btn.addEventListener('click', () => {
-    const parent = btn.parentElement.parentElement;
-    myLibrary = myLibrary.filter(
-      (item) => item.title !== parent.children[0].textContent
-    );
-    parent.remove();
-  });
+  const newBook = new Book(authorTitle, author, pages, readValue);
+  addBookToLibrary(newBook);
+  updateScreen();
+  deleteAndToggle();
 });
