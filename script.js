@@ -1,4 +1,9 @@
 const mainCard = document.querySelector('.cards');
+const dialog = document.querySelector('dialog');
+const exit = document.querySelector('.exit');
+const addBook = document.querySelector('#add-book');
+const form = document.querySelector('form');
+
 let myLibrary = [];
 
 function Book(title, author, noOfPages, isRead) {
@@ -96,12 +101,6 @@ function init() {
 }
 
 init();
-
-// HANDLING DIALOG EVENTS
-const dialog = document.querySelector('dialog');
-const exit = document.querySelector('.exit');
-const addBook = document.querySelector('#add-book');
-const form = document.querySelector('form');
 
 // New Book Event Listener
 addBook.addEventListener('click', () => {
